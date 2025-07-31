@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+</head>
+<body>
+    <form>
+        <h1>Contact Form</h1>
+
+        <fieldset>
+            <legend>Personal info:</legend>
+            <div>
+                <label for="birthday">Birthday:</label>
+                <input type="date" name="birtday" id="birthday">
+            </div>
+            
+            <div>
+                <label for="name">Enter name:</label>
+                <input type="text" name="name" id="name">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Credentials:</legend>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email">
+            </div>
+    
+            <div>
+                <label for="password">Password</label>
+                <input placeholder="enter here..." type="password" name="password" id="password">    
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Terms:</legend>
+            <div>
+                <p>Do you want ?</p>
+                <input type="radio" name="updates" id="updates-yes" value="yes" checked>
+                <label for="updates-yes">Yes</label>
+    
+                <input type="radio" name="updates" id="updates-no" value="no">
+                <label for="updates-no">No</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" name="accept-terms" id="accept-terms" value="accept">
+                <label for="accept-terms">I accept our terms</label>
+            </div>
+
+        </fieldset>
+
+        <input type="submit" value="Press here">
+    </form>
+</body>
+</html>
