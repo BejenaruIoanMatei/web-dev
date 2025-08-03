@@ -9,57 +9,109 @@
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a href="#" class="navbar-brand">My Vue</a>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li v-for="(page, index) in pages" class="nav-item" v-bind:key="index">
-          <a 
-                v-bind:href="page.link.url"
-                v-bind:title="`This link goes to ${page.link.url} page`"
-                v-on:click.prevent="activePage = index"
 
 
-                class="nav-link active" 
-                aria-current="page">
-                {{ page.link.text }}</a>
-        </li> <!--:href without v-bind works-->
-              <!--v-on:click = @click-->
-      </ul>
-    </div>
-  </nav>
+<navbar-viewer
+    :pages="pages"
+    :active-page="activePage"
+    :nav-link-click="(index) => activePage = index"
+    >
 
-  <div id="content" class="container">
-    <h1>{{ pages[activePage].pageTitle }}</h1>
-    <p>{{ pages[activePage].content }}</p>
-  </div>
+</navbar-viewer>
+
+  <page-viewer
+    v-bind:page="pages[activePage]"
+    >
+  </page-viewer>
 
   <script>
+    let app = Vue.createApp({        
+        data() {
+            return {
+                activePage: 0,
+                useDarkNavbar: false,
+                pages: [
+                {
+                    link: {text: 'Home', url:'index.html'},
+                    pageTitle: 'Home Page',
+                    content: 'This is the home page'
+                },
+                {
+                    link: {text: 'About', url:'about.html'},
+                    pageTitle: 'About Page',
+                    content: 'Welcome to about page'
+                },
+                {
+                    link: {text: 'Contact', url:'contact.html'},
+                    pageTitle: 'Contact Page',
+                    content: 'Welcome to contact page'
+                }
+                ]
+            };
+        }
+        });
 
-    Vue.createApp({
-      data() {
-        return {
-            activePage: 0,
-            pages: [
-            {
-                link: {text: 'Home', url:'index.html'},
-                pageTitle: 'Home Page',
-                content: 'This is the home page'
+        app.component('page-viewer',{
+            props:['page'],
+            template: `
+            <div class="container">
+                <h1>{{page.pageTitle}}</h1>
+                <p>{{page.content}}</p>
+              </div>
+            `
+        });
+
+        app.component('navbar-viewer', {
+            props: ['pages', 'activePage', 'navLinkClick'],
+            template: `
+                <nav
+                v-bind:class="[\`navbar-\${theme}\`, \`bg-\${theme}\`, 'navbar', 'navbar-expand-lg']"
+            >
+                <div class="container-fluid">
+                <a href="#" class="navbar-brand">My Vue</a>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li v-for="(page, index) in pages" class="nav-item" v-bind:key="index">
+                    <a 
+                            v-bind:href="page.link.url"
+                            v-bind:title="\`This link goes to \${page.link.url} page\`"
+                            v-on:click.prevent="navLinkClick(index)"
+            
+                            class="nav-link"
+                            v-bind:class="{active: activePage == index}"
+                            aria-current="page">
+                            {{ page.link.text }}</a>
+                    </li> <!--:href without v-bind works-->
+                        <!--v-on:click = @click-->
+                </ul>
+                <form class="d-flex">
+                    <button 
+                        class="btn btn-primary"
+                        @click.prevent="changeTheme()">
+                            Toggle Navbar
+                    </button>
+                </form>
+                </div>
+            </nav>
+            `,
+            data(){
+                return {
+                    theme: 'light',
+                };
             },
-            {
-                link: {text: 'About', url:'about.html'},
-                pageTitle: 'About Page',
-                content: 'Welcome to about page'
-            },
-            {
-                link: {text: 'Contact', url:'contact.html'},
-                pageTitle: 'Contact Page',
-                content: 'Welcome to contact page'
+            methods: {
+                changeTheme() {
+                    let theme = 'light';
+
+                    if(this.theme == 'light'){
+                        theme = 'dark';
+                    }
+
+                    this.theme = theme;
+                }
             }
-            ]
-        };
-      }
-    }).mount('body');
+        });
+
+        app.mount('body');
   </script>
 </body>
 </html>
